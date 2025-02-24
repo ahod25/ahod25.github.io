@@ -1,3 +1,51 @@
+
+//#########################################
+//>>>GOOGLE'S
+//#########################################
+    /*** 📌 AUTENTICAÇÃO GOOGLE API ***/
+    const CLIENT_ID = "850514957457-ddm24e099cp7f6ejjnqi5nsa0427rjud.apps.googleusercontent.com"
+    const API_KEY = "AIzaSyASBuswjiGWiK4BRKED3H3vwShxhHsCeLE";
+    const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"];
+    const SCOPES = "https://www.googleapis.com/auth/drive.file";
+
+    function loadGapi() {
+        gapi.load("client:auth2", () => {
+            gapi.client.init({ apiKey: API_KEY, clientId: CLIENT_ID, discoveryDocs: DISCOVERY_DOCS, scope: SCOPES }).then(() => {
+                console.log("Google API Ready!");
+            }).catch(error => console.error("Erro na API:", error));
+        });
+    }
+
+    function ensureAuthInstance() {
+        if (!gapi.auth2 || !gapi.auth2.getAuthInstance()) {
+            return gapi.auth2.init({ client_id: CLIENT_ID });
+        }
+        return gapi.auth2.getAuthInstance();
+    }
+
+    function uploadToDrive(fileBlob, fileName) {
+        const authInstance = ensureAuthInstance();
+        if (!authInstance) return console.error("Google Auth não está pronto.");
+
+        authInstance.signIn().then(() => {
+            const metadata = { name: fileName, mimeType: "application/pdf", parents: ["root"] };
+            const form = new FormData();
+            form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
+            form.append("file", fileBlob);
+
+            fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart", {
+                method: "POST",
+                headers: new Headers({ Authorization: "Bearer " + gapi.auth.getToken().access_token }),
+                body: form
+            }).then(response => response.json())
+            .then(data => console.log("Upload realizado com sucesso:", data))
+            .catch(error => console.error("Erro ao enviar para o Drive:", error));
+        }).catch(error => console.error("Erro ao autenticar:", error));
+    }
+
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
 
 //##########################################
@@ -192,49 +240,6 @@ document.addEventListener("DOMContentLoaded", function () {
  
 
 
-//#########################################
-//>>>GOOGLE'S
-//#########################################
-    /*** 📌 AUTENTICAÇÃO GOOGLE API ***/
-    const CLIENT_ID = "850514957457-ddm24e099cp7f6ejjnqi5nsa0427rjud.apps.googleusercontent.com"
-    const API_KEY = "AIzaSyASBuswjiGWiK4BRKED3H3vwShxhHsCeLE";
-    const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"];
-    const SCOPES = "https://www.googleapis.com/auth/drive.file";
-
-    function loadGapi() {
-        gapi.load("client:auth2", () => {
-            gapi.client.init({ apiKey: API_KEY, clientId: CLIENT_ID, discoveryDocs: DISCOVERY_DOCS, scope: SCOPES }).then(() => {
-                console.log("Google API Ready!");
-            }).catch(error => console.error("Erro na API:", error));
-        });
-    }
-
-    function ensureAuthInstance() {
-        if (!gapi.auth2 || !gapi.auth2.getAuthInstance()) {
-            return gapi.auth2.init({ client_id: CLIENT_ID });
-        }
-        return gapi.auth2.getAuthInstance();
-    }
-
-    function uploadToDrive(fileBlob, fileName) {
-        const authInstance = ensureAuthInstance();
-        if (!authInstance) return console.error("Google Auth não está pronto.");
-
-        authInstance.signIn().then(() => {
-            const metadata = { name: fileName, mimeType: "application/pdf", parents: ["root"] };
-            const form = new FormData();
-            form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
-            form.append("file", fileBlob);
-
-            fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart", {
-                method: "POST",
-                headers: new Headers({ Authorization: "Bearer " + gapi.auth.getToken().access_token }),
-                body: form
-            }).then(response => response.json())
-            .then(data => console.log("Upload realizado com sucesso:", data))
-            .catch(error => console.error("Erro ao enviar para o Drive:", error));
-        }).catch(error => console.error("Erro ao autenticar:", error));
-    }
 //###############################################
 //>>>SUBMIT
 //###############################################
@@ -352,5 +357,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 //###############################################
     showStep(currentStep);
-    loadGapi(); // Iniciar Google API
+    setTimeout(() => {
+        if (typeof gapi !== "undefined") {
+            loadGapi();
+        } else {
+            console.error("Erro: Google API não carregada.");
+        }
+    }, 1000);
 });
