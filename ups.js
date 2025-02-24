@@ -355,12 +355,12 @@ document.addEventListener("DOMContentLoaded", function () {
          const pdfBlob = doc.output("blob");
          
          // 📌 Baixar o PDF automaticamente
-        // doc.save(`Close_Inspection_${formData.job_number}.pdf`);
+         doc.save(`Close_Inspection_${formData.job_number}.pdf`);
  
         //  alert("PDF gerado e baixado com sucesso!");
  
          // 📌 Enviar o PDF para o Google Drive
-         uploadToDrive(pdfBlob, `Close_Inspection_${formData.job_number}.pdf`);
+        // uploadToDrive(pdfBlob, `Close_Inspection_${formData.job_number}.pdf`);
  
 
     });
