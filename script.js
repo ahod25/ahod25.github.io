@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
  
+
     
     // 📌 Capturando elementos do canvas e botão de limpar
     const canvas = document.getElementById("signatureCanvas");
@@ -318,30 +319,65 @@ document.addEventListener("DOMContentLoaded", function () {
          }).catch(error => console.error("Erro na inicialização da API:", error));
      }
  
+
+     // ✅ Verifica se a API do Google está carregada antes de autenticar
+    function ensureAuthInstance() {
+        if (!gapi.auth2 || !gapi.auth2.getAuthInstance()) {
+            console.error("Google Auth não foi inicializado. Tentando novamente...");
+            return gapi.auth2.init({
+                client_id: CLIENT_ID
+            });
+        }
+        return gapi.auth2.getAuthInstance();
+    }
+
+
+
+    function loadGapi() {
+        gapi.load("client:auth2", () => {
+            gapi.client.init({
+                apiKey: API_KEY,
+                clientId: CLIENT_ID,
+                discoveryDocs: DISCOVERY_DOCS,
+                scope: SCOPES
+            }).then(() => {
+                console.log("Google API Ready!");
+            }).catch(error => console.error("Erro na inicialização da API:", error));
+        });
+    }
+
+
      // 📌 Função para fazer upload do PDF para o Google Drive
-     function uploadToDrive(fileBlob, fileName) {
-         gapi.auth2.getAuthInstance().signIn().then(() => {
-             const metadata = {
-                 name: fileName,
-                 mimeType: "application/pdf",
-                 parents: ["root"] // Envia para a pasta raiz do Google Drive
-             };
- 
-             const form = new FormData();
-             form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
-             form.append("file", fileBlob);
- 
-             fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart", {
-                 method: "POST",
-                 headers: new Headers({ Authorization: "Bearer " + gapi.auth.getToken().access_token }),
-                 body: form
-             }).then(response => response.json())
-             .then(data => {
-                 console.log("Upload realizado com sucesso:", data);
-                 alert("PDF enviado para o Google Drive com sucesso!");
-             }).catch(error => console.error("Erro ao enviar para o Drive:", error));
-         }).catch(error => console.error("Erro ao autenticar:", error));
-     }
+    function uploadToDrive(fileBlob, fileName) {
+    const authInstance = ensureAuthInstance();
+
+    if (!authInstance) {
+        console.error("Google Auth ainda não está pronto.");
+        return;
+    }
+
+    authInstance.signIn().then(() => {
+        const metadata = {
+            name: fileName,
+            mimeType: "application/pdf",
+            parents: ["root"]
+        };
+
+        const form = new FormData();
+        form.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
+        form.append("file", fileBlob);
+
+        fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart", {
+            method: "POST",
+            headers: new Headers({ Authorization: "Bearer " + gapi.auth.getToken().access_token }),
+            body: form
+        }).then(response => response.json())
+        .then(data => {
+            console.log("Upload realizado com sucesso:", data);
+            alert("PDF enviado para o Google Drive com sucesso!");
+        }).catch(error => console.error("Erro ao enviar para o Drive:", error));
+    }).catch(error => console.error("Erro ao autenticar:", error));
+}
  
      handleClientLoad();
  
