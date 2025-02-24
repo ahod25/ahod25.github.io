@@ -9,11 +9,20 @@
     const SCOPES = "https://www.googleapis.com/auth/drive.file";
 
     function loadGapi() {
-        gapi.load("client:auth2", () => {
-            gapi.client.init({ apiKey: API_KEY, clientId: CLIENT_ID, discoveryDocs: DISCOVERY_DOCS, scope: SCOPES }).then(() => {
-                console.log("Google API Ready!");
-            }).catch(error => console.error("Erro na API:", error));
-        });
+        if (typeof gapi !== "undefined") {
+            gapi.load("client:auth2", () => {
+                gapi.client.init({
+                    apiKey: API_KEY,
+                    clientId: CLIENT_ID,
+                    discoveryDocs: DISCOVERY_DOCS,
+                    scope: SCOPES
+                }).then(() => {
+                    console.log("Google API Ready!");
+                }).catch(error => console.error("Erro na inicialização da API:", error));
+            });
+        } else {
+            console.error("Erro: Google API não carregada.");
+        }
     }
 
     function ensureAuthInstance() {
@@ -357,11 +366,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 //###############################################
     showStep(currentStep);
-    setTimeout(() => {
-        if (typeof gapi !== "undefined") {
-            loadGapi();
-        } else {
-            console.error("Erro: Google API não carregada.");
-        }
-    }, 1000);
+    setTimeout(loadGapi, 1000);
 });
