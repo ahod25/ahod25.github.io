@@ -366,5 +366,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 //###############################################
     showStep(currentStep);
-    setTimeout(loadGapi, 1000);
+    setTimeout(() => {
+        if (typeof gapi !== "undefined") {
+            loadGapi();
+        } else {
+            console.error("Erro: Google API não carregada.");
+        }
+    }, 1000);
 });
