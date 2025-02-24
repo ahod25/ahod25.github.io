@@ -1,0 +1,324 @@
+/* ======= ESTILO GERAL ======= */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+    width: 80%; /* 📌 O container ocupa sempre 80% da tela */
+    max-width: 700px;
+    min-height: 550px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* ======= WIZARD FORM ======= */
+#wizardForm {
+    width: 90%; /* 📌 O formulário ocupa sempre 90% do container principal */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Ajuste responsivo para telas menores */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+    
+    #wizardForm {
+        width: 95%; /* 📌 Em telas menores, aumenta para 95% para melhor aproveitamento do espaço */
+    }
+}
+
+/* ======= SEÇÃO DO SLIDER (NPS) ======= */
+.nps-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    background: linear-gradient(to right, #ff4d4d, #ffae42, #ffee42, #bfff4d, #4dff4d);
+    margin-top: 15px;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+/* ======= SEÇÃO DA ASSINATURA ======= */
+.signature-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+    .container {
+        width: 90%; /* 📌 Em telas menores, ocupa 90% para melhor aproveitamento do espaço */
+    }
+}
+
+/* ======= BARRA DE PROGRESSO ======= */
+.progress-container {
+    width: 100%;
+    height: 6px;
+    background: #ddd;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    height: 6px;
+    background: #2563EB;
+    width: 0;
+    transition: width 0.3s ease;
+}
+
+/* ======= CONFIGURAÇÃO DO WIZARD ======= */
+.wizard-content {
+    background: #25eb50;
+    width: 100%; 
+    display: block;
+}
+
+
+.wizard-step {
+    display: none;
+}
+
+.wizard-step.active {
+    width: 100%; 
+    display: block;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+}
+
+button {
+    padding: 12px 18px;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+    background: #2563EB;
+    color: white;
+    font-size: 16px;
+}
+
+button.hidden {
+    display: none;
+}
+
+/* ======= ESTILO DAS CARINHAS DE SATISFAÇÃO ======= */
+.satisfaction-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.satisfaction-btn {
+    font-size: 24px;
+    padding: 15px;
+    border: none;
+    background: #ddd; /* Cinza por padrão */
+    cursor: pointer;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 🟥 Vermelho ao passar o mouse na pior nota */
+.satisfaction-btn:nth-child(1):hover { background: #ff4d4d; }
+.satisfaction-btn:nth-child(2):hover { background: #ff944d; }
+.satisfaction-btn:nth-child(3):hover { background: #ffd24d; }
+.satisfaction-btn:nth-child(4):hover { background: #bfff4d; }
+.satisfaction-btn:nth-child(5):hover { background: #4dff4d; } /* 🟩 Verde na melhor nota */
+
+/* ✅ Quando selecionado, mantém a cor fixa */
+.satisfaction-btn.selected:nth-child(1) { background: #ff4d4d; color: white; }
+.satisfaction-btn.selected:nth-child(2) { background: #ff944d; color: white; }
+.satisfaction-btn.selected:nth-child(3) { background: #ffd24d; color: white; }
+.satisfaction-btn.selected:nth-child(4) { background: #bfff4d; color: white; }
+.satisfaction-btn.selected:nth-child(5) { background: #4dff4d; color: white; }
+
+/* ❌ Carinhas desativadas após a seleção */
+.satisfaction-btn.disabled {
+    cursor: not-allowed;
+    background: #ddd !important; /* Volta ao cinza */
+    opacity: 0.5;
+}
+
+/* ======= SEÇÃO DO SLIDER (NPS) ======= */
+.nps-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    background: linear-gradient(to right, #ff4d4d, #ffae42, #ffee42, #bfff4d, #4dff4d);
+    margin-top: 15px;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.nps-container label {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Estilizando o slider para um visual mais moderno */
+.nps-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 90%;
+    height: 12px;
+    border-radius: 6px;
+    outline: none;
+    background: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* Bolinha de controle */
+.nps-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: white;
+    border: 2px solid #2563EB;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.nps-slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: white;
+    border: 2px solid #2563EB;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* Animação ao arrastar */
+.nps-slider:active::-webkit-slider-thumb {
+    transform: scale(1.2);
+}
+
+.nps-value {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #2563EB;
+    margin-left: 50%;
+}
+/* ======= SEÇÃO DAS ESTRELAS (AVALIAÇÃO) ======= */
+.star-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+}
+
+.star {
+    font-size: 40px;
+    color: #ccc; /* Cinza padrão */
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+/* ⭐️ Preenche as estrelas ao passar o mouse */
+.star:hover ~ .star,
+.star:hover {
+    color: #ffcc00;
+}
+
+/* ⭐️ Mantém as estrelas preenchidas após a seleção */
+.star.selected {
+    color: #ffcc00;
+}
+
+/* ⭐️ Animação ao clicar */
+.star:active {
+    transform: scale(1.2);
+}
+
+/* ======= SEÇÃO DA ASSINATURA ======= */
+.signature-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+/* Ajuste o tamanho do canvas da assinatura */
+#signatureCanvas {
+    width: 70%; /* 📌 Agora ocupa pelo menos 70% do container principal */
+    height: 150px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    background: white;
+    touch-action: none;
+    cursor: crosshair;
+}
+
+
+/* Estilização do botão Clear */
+#clearSignature {
+    background: #ff4d4d;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s ease;
+}
+
+#clearSignature:hover {
+    background: #cc0000;
+}
+
+/* 📌 Ajuste para telas menores */
+@media (max-width: 768px) {
+    #signatureCanvas {
+        width: 85%;
+    }
+}

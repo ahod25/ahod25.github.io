@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self' https://apis.google.com https://www.gstatic.com https://cdnjs.cloudflare.com;
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://apis.google.com https://cdnjs.cloudflare.com https://www.gstatic.com;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+    font-src 'self' https://fonts.gstatic.com;
+    img-src 'self' data: https://www.gstatic.com https://www.google.com;
+    connect-src 'self' https://www.googleapis.com https://oauth2.googleapis.com;
+    frame-src 'self' https://accounts.google.com https://content.googleapis.com;">
+
+
+    <title>Close Inspection Wizard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <link rel="icon" href="data:,">
+
+</head>
+<body>
+
+    <div class="container">
+        <!-- 🌟 Barra de Progresso do Wizard -->
+        <div class="progress-container">
+            <div id="progressBar" class="progress-bar"></div>
+        </div>
+
+        <h2 class="title">Close Inspection</h2>
+
+        <form id="wizardForm">
+            <div class="wizard-content">
+                  
+
+                <!-- 📌 Passo 1: Nome do Cliente -->
+                <div class="wizard-step active">
+                    <label>Customer Name</label>
+                    <input type="text" name="customer_name" required>
+                </div>
+
+                <!-- 📌 Passo 2: Número do JOB -->
+                <div class="wizard-step">
+                    <label>JOB Number</label>
+                    <input type="text" name="job_number" required>
+                </div>
+
+                <!-- 📌 Passo 3: Qualidade do Serviço -->
+                <div class="wizard-step">
+                    <label>Is the job quality satisfactory?</label>
+                    <div class="satisfaction-container">
+                        <button type="button" class="satisfaction-btn" data-value="1">😡</button>
+                        <button type="button" class="satisfaction-btn" data-value="2">😕</button>
+                        <button type="button" class="satisfaction-btn" data-value="3">😐</button>
+                        <button type="button" class="satisfaction-btn" data-value="4">🙂</button>
+                        <button type="button" class="satisfaction-btn" data-value="5">😃</button>
+                    </div>
+                    <input type="hidden" name="job_satisfaction" id="jobSatisfactionValue">
+                </div>
+
+                <!-- 📌 Passo 4: NPS - Recomendação -->
+                <div class="wizard-step">
+                    <label>How likely are you to recommend us?</label>
+                    <div class="nps-container">
+                        <input type="range" name="nps" min="0" max="10" step="1" id="npsSlider" class="nps-slider">
+                        
+                    </div>
+                    <div id="npsValue" class="nps-value">5</div>
+                </div>
+
+                <!-- 📌 Passo 5: Avaliação por Estrelas -->
+                <div class="wizard-step">
+                    <label>How many stars would you give us on Google?</label>
+                    <div class="star-container" id="starRating">
+                        <span class="star" data-value="1">★</span>
+                        <span class="star" data-value="2">★</span>
+                        <span class="star" data-value="3">★</span>
+                        <span class="star" data-value="4">★</span>
+                        <span class="star" data-value="5">★</span>
+                    </div>
+                    <input type="hidden" name="google_rating" id="googleRatingValue">
+                </div>
+
+                <!-- 📌 Passo 6: Assinatura do Cliente -->
+                <div class="wizard-step ">
+                    <label>Customer Signature</label>
+                    <div class="signature-container">
+                        <canvas id="signatureCanvas"></canvas>
+                        <button type="button" id="clearSignature">Clear</button>
+                    </div>
+                    <input type="hidden" name="signature" id="signatureData">
+                </div>
+              
+
+            </div>
+
+            <!-- 🔘 Botões de Navegação -->
+            <div class="buttons">
+                <button type="button" id="prevBtn" class="hidden">Back</button>
+                <button type="button" id="nextBtn">Next</button>
+                <button type="submit" id="submitBtn" class="hidden">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="ups.js"></script>
+
+</body>
+</html>
